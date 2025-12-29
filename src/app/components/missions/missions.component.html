@@ -1,0 +1,374 @@
+<div class="missions-container">
+  <!-- Hero Header with animated background -->
+  <div class="missions-header">
+    <div class="header-background">
+      <div class="floating-icon">🚀</div>
+      <div class="floating-icon">🎯</div>
+      <div class="floating-icon">⚔️</div>
+      <div class="floating-icon">🛡️</div>
+      <div class="floating-icon">💥</div>
+    </div>
+    <div class="header-content">
+      <h1>
+        <span class="title-icon">🎯</span>
+        Mission Control Center
+        <span class="title-icon">🚀</span>
+      </h1>
+      <p>Coordinating Earth's Defense Operations</p>
+      
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-number">{{ missions.length }}</div>
+          <div class="stat-label">Total Missions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ getActiveMissions() }}</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ getCompletedMissions() }}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ getSuccessRate() }}%</div>
+          <div class="stat-label">Success Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Filters Section -->
+  <div class="filters-section">
+    <div class="filter-container">
+      <h3>
+        <mat-icon>filter_list</mat-icon>
+        Mission Filters
+      </h3>
+      
+      <div class="filter-groups">
+        <!-- Status Filters -->
+        <div class="filter-group">
+          <label>Status:</label>
+          <div class="filter-buttons">
+            <button 
+              mat-raised-button 
+              [class.active]="selectedFilter === 'all'"
+              (click)="filterMissions('all')">
+              <mat-icon>list</mat-icon>
+              All
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedFilter === 'active'"
+              (click)="filterMissions('active')">
+              <mat-icon>play_arrow</mat-icon>
+              Active
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedFilter === 'completed'"
+              (click)="filterMissions('completed')">
+              <mat-icon>check_circle</mat-icon>
+              Completed
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedFilter === 'failed'"
+              (click)="filterMissions('failed')">
+              <mat-icon>error</mat-icon>
+              Failed
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedFilter === 'pending'"
+              (click)="filterMissions('pending')">
+              <mat-icon>schedule</mat-icon>
+              Pending
+            </button>
+          </div>
+        </div>
+
+        <!-- Threat Level Filters -->
+        <div class="filter-group">
+          <label>Threat Level:</label>
+          <div class="filter-buttons">
+            <button 
+              mat-raised-button 
+              [class.active]="selectedThreatFilter === 'all'"
+              (click)="filterByThreat('all')">
+              All Threats
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedThreatFilter === 'low'"
+              (click)="filterByThreat('low')">
+              <mat-icon>sentiment_satisfied</mat-icon>
+              Low
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedThreatFilter === 'medium'"
+              (click)="filterByThreat('medium')">
+              <mat-icon>sentiment_neutral</mat-icon>
+              Medium
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedThreatFilter === 'high'"
+              (click)="filterByThreat('high')">
+              <mat-icon>sentiment_dissatisfied</mat-icon>
+              High
+            </button>
+            <button 
+              mat-raised-button 
+              [class.active]="selectedThreatFilter === 'critical'"
+              (click)="filterByThreat('critical')">
+              <mat-icon>dangerous</mat-icon>
+              Critical
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Missions Grid -->
+  <div class="missions-grid">
+    <div *ngFor="let mission of filteredMissions; trackBy: trackByMission" 
+         class="mission-card-container">
+      
+      <div class="mission-card" (click)="viewMissionDetails(mission.id)">
+        <!-- Mission Header with Threat Indicator -->
+        <div class="mission-header" [ngClass]="'threat-' + mission.threatLevel">
+          <div class="header-background"></div>
+          
+          <div class="mission-title-section">
+            <div class="mission-icon">
+              <mat-icon>{{ getMissionIcon(mission.type) }}</mat-icon>
+            </div>
+            <div class="mission-title-info">
+              <h3 class="mission-name">{{ mission.name }}</h3>
+              <p class="mission-id">Mission #{{ mission.id.toString().padStart(3, '0') }}</p>
+            </div>
+          </div>
+
+          <div class="mission-badges">
+            <div class="threat-badge" [ngClass]="'threat-' + mission.threatLevel">
+              <mat-icon>{{ getThreatIcon(mission.threatLevel) }}</mat-icon>
+              <span>{{ mission.threatLevel | titlecase }}</span>
+            </div>
+            <div class="status-badge" [ngClass]="'status-' + mission.status">
+              <mat-icon>{{ getStatusIcon(mission.status) }}</mat-icon>
+              <span>{{ mission.status | titlecase }}</span>
+            </div>
+          </div>
+
+          <!-- Animated Threat Indicator -->
+          <div class="threat-pulse" [ngClass]="'pulse-' + mission.threatLevel"></div>
+        </div>
+
+        <!-- Mission Content -->
+        <div class="mission-content">
+          <div class="mission-description">
+            <p>{{ mission.description }}</p>
+          </div>
+
+          <!-- Mission Details Grid -->
+          <div class="mission-details-grid">
+            <div class="detail-card">
+              <div class="detail-icon">
+                <mat-icon>location_on</mat-icon>
+              </div>
+              <div class="detail-info">
+                <span class="detail-label">Location</span>
+                <span class="detail-value">{{ mission.location }}</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <div class="detail-icon">
+                <mat-icon>category</mat-icon>
+              </div>
+              <div class="detail-info">
+                <span class="detail-label">Type</span>
+                <span class="detail-value">{{ mission.type | titlecase }}</span>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <div class="detail-icon">
+                <mat-icon>schedule</mat-icon>
+              </div>
+              <div class="detail-info">
+                <span class="detail-label">Start Date</span>
+                <span class="detail-value">{{ formatDate(mission.startDate) }}</span>
+              </div>
+            </div>
+
+            <div class="detail-card" *ngIf="mission.endDate">
+              <div class="detail-icon">
+                <mat-icon>event_available</mat-icon>
+              </div>
+              <div class="detail-info">
+                <span class="detail-label">End Date</span>
+                <span class="detail-value">{{ formatDate(mission.endDate) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Assigned Heroes Section -->
+          <div class="heroes-section">
+            <div class="heroes-header">
+              <mat-icon>group</mat-icon>
+              <span>Assigned Heroes ({{ mission.assignedHeroes.length }})</span>
+            </div>
+            
+            <div class="heroes-avatars">
+              <div *ngFor="let heroId of mission.assignedHeroes.slice(0, 4)" 
+                   class="hero-avatar"
+                   [title]="getHeroName(heroId)">
+                {{ getHeroAvatar(heroId) }}
+              </div>
+              <div *ngIf="mission.assignedHeroes.length > 4" 
+                   class="heroes-overflow">
+                +{{ mission.assignedHeroes.length - 4 }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Objectives Section -->
+          <div class="objectives-section">
+            <div class="objectives-header">
+              <mat-icon>checklist</mat-icon>
+              <span>Mission Objectives</span>
+            </div>
+            
+            <div class="objectives-list">
+              <div *ngFor="let objective of mission.objectives.slice(0, 3)" 
+                   class="objective-item">
+                <mat-icon class="objective-icon">radio_button_unchecked</mat-icon>
+                <span>{{ objective }}</span>
+              </div>
+              <div *ngIf="mission.objectives.length > 3" 
+                   class="objectives-more">
+                <mat-icon>more_horiz</mat-icon>
+                <span>+{{ mission.objectives.length - 3 }} more objectives</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar (for active missions) -->
+          <div *ngIf="mission.status === 'active'" class="progress-section">
+            <div class="progress-header">
+              <span>Mission Progress</span>
+              <span class="progress-value">{{ getMissionProgress(mission) }}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" 
+                   [style.width.%]="getMissionProgress(mission)"
+                   [ngClass]="'progress-' + mission.threatLevel">
+                <div class="progress-shine"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rewards Section (for completed missions) -->
+          <div *ngIf="mission.rewards && mission.rewards.length > 0" class="rewards-section">
+            <div class="rewards-header">
+              <mat-icon>emoji_events</mat-icon>
+              <span>Mission Rewards</span>
+            </div>
+            <div class="rewards-list">
+              <div *ngFor="let reward of mission.rewards" class="reward-item">
+                <mat-icon>star</mat-icon>
+                <span>{{ reward }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mission Actions -->
+        <div class="mission-actions">
+          <button mat-raised-button color="primary" class="action-btn">
+            <mat-icon>visibility</mat-icon>
+            View Details
+          </button>
+          
+          <div class="action-icons">
+            <button mat-icon-button 
+                    class="edit-btn"
+                    [disabled]="mission.status === 'completed' || mission.status === 'failed'">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="share-btn">
+              <mat-icon>share</mat-icon>
+            </button>
+            <button mat-icon-button class="bookmark-btn">
+              <mat-icon>bookmark_border</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hover Overlay -->
+        <div class="hover-overlay">
+          <div class="overlay-content">
+            <mat-icon>visibility</mat-icon>
+            <span>View Mission Details</span>
+          </div>
+        </div>
+
+        <!-- Status Glow Effect -->
+        <div class="status-glow" [ngClass]="'glow-' + mission.status"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Empty State -->
+  <div *ngIf="filteredMissions.length === 0" class="empty-state">
+    <div class="empty-animation">
+      <mat-icon>search_off</mat-icon>
+      <div class="empty-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+    </div>
+    <h3>No Missions Found</h3>
+    <p>No missions match your current filters. Try adjusting your search criteria.</p>
+    <div class="empty-actions">
+      <button mat-raised-button color="primary" (click)="filterMissions('all')">
+        <mat-icon>refresh</mat-icon>
+        Show All Missions
+      </button>
+      <button mat-raised-button color="accent">
+        <mat-icon>add</mat-icon>
+        Create New Mission
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Stats Footer -->
+  <div class="stats-footer">
+    <div class="footer-stat">
+      <mat-icon>trending_up</mat-icon>
+      <div class="stat-info">
+        <span class="stat-number">{{ getSuccessRate() }}%</span>
+        <span class="stat-label">Success Rate</span>
+      </div>
+    </div>
+    <div class="footer-stat">
+      <mat-icon>schedule</mat-icon>
+      <div class="stat-info">
+        <span class="stat-number">{{ getAverageTime() }}</span>
+        <span class="stat-label">Avg. Duration</span>
+      </div>
+    </div>
+    <div class="footer-stat">
+      <mat-icon>group</mat-icon>
+      <div class="stat-info">
+        <span class="stat-number">{{ getTotalHeroesDeployed() }}</span>
+        <span class="stat-label">Heroes Deployed</span>
+      </div>
+    </div>
+  </div>
+</div>

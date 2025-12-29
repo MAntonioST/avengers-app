@@ -1,0 +1,263 @@
+<nav class="navbar">
+  <!-- Background Effects -->
+  <div class="navbar-background">
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    <div class="floating-particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+  </div>
+
+  <!-- Main Navbar Content -->
+  <div class="navbar-content">
+    <!-- Logo Section -->
+    <div class="navbar-brand" routerLink="/dashboard">
+      <div class="brand-icon">
+        <span class="icon-main">🦸‍♂️</span>
+        <div class="icon-glow"></div>
+      </div>
+      <div class="brand-text">
+        <h1 class="brand-title">AVENGERS</h1>
+        <span class="brand-subtitle">Command Center</span>
+      </div>
+      <div class="brand-pulse"></div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="navbar-nav">
+      <a 
+        routerLink="/dashboard" 
+        routerLinkActive="active" 
+        class="nav-link"
+        [routerLinkActiveOptions]="{exact: true}">
+        <div class="nav-icon">
+          <mat-icon>dashboard</mat-icon>
+        </div>
+        <span class="nav-text">Dashboard</span>
+        <div class="nav-indicator"></div>
+      </a>
+
+      <a 
+        routerLink="/heroes" 
+        routerLinkActive="active" 
+        class="nav-link">
+        <div class="nav-icon">
+          <mat-icon>group</mat-icon>
+        </div>
+        <span class="nav-text">Heroes</span>
+        <div class="nav-indicator"></div>
+      </a>
+
+      <a 
+        routerLink="/missions" 
+        routerLinkActive="active" 
+        class="nav-link">
+        <div class="nav-icon">
+          <mat-icon>assignment</mat-icon>
+        </div>
+        <span class="nav-text">Missions</span>
+        <div class="nav-indicator"></div>
+      </a>
+    </div>
+
+    <!-- User Section -->
+    <div class="navbar-user">
+      <!-- Notifications -->
+      <div class="notification-container">
+        <button mat-icon-button class="notification-btn" [matMenuTriggerFor]="notificationMenu">
+          <mat-icon>notifications</mat-icon>
+          <span class="notification-badge">3</span>
+          <div class="notification-pulse"></div>
+        </button>
+        
+        <mat-menu #notificationMenu="matMenu" class="notification-menu">
+          <div class="notification-header">
+            <h3>Notifications</h3>
+            <span class="notification-count">3 new</span>
+          </div>
+          
+          <div class="notification-item" mat-menu-item>
+            <div class="notification-icon hero">
+              <mat-icon>person_add</mat-icon>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">New Hero Registered</div>
+              <div class="notification-text">Spider-Man joined the team</div>
+              <div class="notification-time">2 hours ago</div>
+            </div>
+          </div>
+          
+          <div class="notification-item" mat-menu-item>
+            <div class="notification-icon mission">
+              <mat-icon>assignment_turned_in</mat-icon>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Mission Completed</div>
+              <div class="notification-text">Hydra Infiltration successful</div>
+              <div class="notification-time">4 hours ago</div>
+            </div>
+          </div>
+          
+          <div class="notification-item" mat-menu-item>
+            <div class="notification-icon alert">
+              <mat-icon>warning</mat-icon>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Threat Alert</div>
+              <div class="notification-text">High energy signature detected</div>
+              <div class="notification-time">6 hours ago</div>
+            </div>
+          </div>
+          
+          <div class="notification-footer">
+            <button mat-button color="primary">View All</button>
+          </div>
+        </mat-menu>
+      </div>
+
+      <!-- User Profile -->
+      <div class="user-profile">
+        <button mat-button class="profile-btn" [matMenuTriggerFor]="userMenu">
+          <div class="profile-avatar">
+            <span class="avatar-emoji">👤</span>
+            <div class="avatar-status"></div>
+          </div>
+          <div class="profile-info">
+            <span class="profile-name">Nick Fury</span>
+            <span class="profile-role">Director</span>
+          </div>
+          <mat-icon class="profile-arrow">keyboard_arrow_down</mat-icon>
+        </button>
+
+        <mat-menu #userMenu="matMenu" class="user-menu">
+          <div class="user-menu-header">
+            <div class="user-avatar-large">
+              <span class="avatar-emoji">👤</span>
+            </div>
+            <div class="user-info">
+              <div class="user-name">Nick Fury</div>
+              <div class="user-email">director@shield.gov</div>
+              <div class="user-status online">
+                <div class="status-dot"></div>
+                <span>Online</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="menu-divider"></div>
+          
+          <button mat-menu-item class="menu-item">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          
+          <button mat-menu-item class="menu-item">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          
+          <button mat-menu-item class="menu-item">
+            <mat-icon>help</mat-icon>
+            <span>Help & Support</span>
+          </button>
+          
+          <div class="menu-divider"></div>
+          
+          <button mat-menu-item class="menu-item logout">
+            <mat-icon>logout</mat-icon>
+            <span>Sign Out</span>
+          </button>
+        </mat-menu>
+      </div>
+
+      <!-- Emergency Button -->
+      <div class="emergency-container">
+        <button mat-raised-button color="warn" class="emergency-btn">
+          <mat-icon>emergency</mat-icon>
+          <span>EMERGENCY</span>
+          <div class="emergency-glow"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <div class="mobile-menu-toggle" [class.active]="isMobileMenuOpen" (click)="toggleMobileMenu()">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" [class.open]="isMobileMenuOpen">
+    <div class="mobile-nav-content">
+      <div class="mobile-nav-header">
+        <div class="mobile-brand">
+          <span class="mobile-icon">🦸‍♂️</span>
+          <span class="mobile-title">AVENGERS</span>
+        </div>
+        <button mat-icon-button class="mobile-close" (click)="toggleMobileMenu()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="mobile-nav-links">
+        <a routerLink="/dashboard" 
+           routerLinkActive="active" 
+           class="mobile-nav-link"
+           [routerLinkActiveOptions]="{exact: true}"
+           (click)="closeMobileMenu()">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+
+        <a routerLink="/heroes" 
+           routerLinkActive="active" 
+           class="mobile-nav-link"
+           (click)="closeMobileMenu()">
+          <mat-icon>group</mat-icon>
+          <span>Heroes</span>
+        </a>
+
+        <a routerLink="/missions" 
+           routerLinkActive="active" 
+           class="mobile-nav-link"
+           (click)="closeMobileMenu()">
+          <mat-icon>assignment</mat-icon>
+          <span>Missions</span>
+        </a>
+      </div>
+
+      <div class="mobile-user-section">
+        <div class="mobile-user-info">
+          <div class="mobile-avatar">👤</div>
+          <div class="mobile-user-details">
+            <span class="mobile-user-name">Nick Fury</span>
+            <span class="mobile-user-role">Director</span>
+          </div>
+        </div>
+
+        <div class="mobile-actions">
+          <button mat-icon-button>
+            <mat-icon>notifications</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>settings</mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon>emergency</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" 
+       [class.active]="isMobileMenuOpen" 
+       (click)="closeMobileMenu()"></div>
+</nav>

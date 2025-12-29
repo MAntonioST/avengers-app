@@ -1,0 +1,199 @@
+<div class="hero-list-container">
+  <!-- Header com gradiente e stats -->
+  <div class="hero-header">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <h1>
+        <span class="hero-icon">🦸‍♂️</span>
+        Avengers Roster
+        <span class="hero-icon">🦸‍♀️</span>
+      </h1>
+      <p>Earth's Mightiest Heroes</p>
+      
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-number">{{ heroes.length }}</div>
+          <div class="stat-label">Total Heroes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ getActiveHeroes() }}</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ getRetiredHeroes() }}</div>
+          <div class="stat-label">Retired</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros elegantes -->
+  <div class="filters-section">
+    <div class="filter-container">
+      <h3>Filter Heroes</h3>
+      <div class="filter-buttons">
+        <button 
+          mat-raised-button 
+          [class.active]="selectedFilter === 'all'"
+          (click)="filterHeroes('all')">
+          <mat-icon>group</mat-icon>
+          All Heroes
+        </button>
+        <button 
+          mat-raised-button 
+          [class.active]="selectedFilter === 'active'"
+          (click)="filterHeroes('active')">
+          <mat-icon>check_circle</mat-icon>
+          Active
+        </button>
+        <button 
+          mat-raised-button 
+          [class.active]="selectedFilter === 'inactive'"
+          (click)="filterHeroes('inactive')">
+          <mat-icon>pause_circle</mat-icon>
+          Inactive
+        </button>
+        <button 
+          mat-raised-button 
+          [class.active]="selectedFilter === 'retired'"
+          (click)="filterHeroes('retired')">
+          <mat-icon>cancel</mat-icon>
+          Retired
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid de heróis redesenhado -->
+  <div class="heroes-grid">
+    <div *ngFor="let hero of filteredHeroes; trackBy: trackByHero" 
+         class="hero-card-container">
+      
+      <div class="hero-card" (click)="viewHeroDetails(hero.id)">
+        <!-- Background pattern -->
+        <div class="card-background"></div>
+        
+        <!-- Hero image/avatar section -->
+        <div class="hero-image-section">
+          <div class="hero-avatar-large">
+            <span class="avatar-emoji">{{ hero.avatar }}</span>
+            <div class="power-aura" [ngClass]="getPowerLevelClass(hero)"></div>
+          </div>
+          
+          <!-- Status indicator -->
+          <div class="status-indicator-floating" [ngClass]="'status-' + hero.status">
+            <mat-icon>{{ getStatusIcon(hero.status) }}</mat-icon>
+          </div>
+          
+          <!-- Rank badge -->
+          <div class="rank-badge">
+            <mat-icon>military_tech</mat-icon>
+            <span>#{{ hero.id }}</span>
+          </div>
+        </div>
+
+        <!-- Hero info section -->
+        <div class="hero-info-section">
+          <div class="hero-names">
+            <h2 class="hero-name">{{ hero.name }}</h2>
+            <p class="hero-real-name">{{ hero.realName }}</p>
+            <p class="hero-affiliation">{{ hero.affiliation }}</p>
+          </div>
+
+          <!-- Power level indicator -->
+          <div class="power-level-section">
+            <div class="power-level-header">
+              <span class="power-label">Power Level</span>
+              <span class="power-value">{{ calculateOverallPower(hero) }}%</span>
+            </div>
+            <div class="power-level-bar">
+              <div class="power-fill" 
+                   [style.width.%]="calculateOverallPower(hero)"
+                   [ngClass]="getPowerLevelClass(hero)">
+                <div class="power-shine"></div>
+              </div>
+            </div>
+            <div class="power-tier">{{ getPowerLevelText(hero) }}</div>
+          </div>
+
+          <!-- Stats mini preview -->
+          <div class="stats-mini">
+            <div class="stat-mini">
+              <div class="stat-icon">💪</div>
+              <div class="stat-bar-mini">
+                <div class="stat-fill-mini" [style.width.%]="hero.stats.strength"></div>
+              </div>
+              <span class="stat-value-mini">{{ hero.stats.strength }}</span>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-icon">🧠</div>
+              <div class="stat-bar-mini">
+                <div class="stat-fill-mini" [style.width.%]="hero.stats.intelligence"></div>
+              </div>
+              <span class="stat-value-mini">{{ hero.stats.intelligence }}</span>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-bar-mini">
+                <div class="stat-fill-mini" [style.width.%]="hero.stats.speed"></div>
+              </div>
+              <span class="stat-value-mini">{{ hero.stats.speed }}</span>
+            </div>
+          </div>
+
+          <!-- Powers tags -->
+          <div class="powers-tags">
+            <div class="powers-label">Primary Powers</div>
+            <div class="powers-list">
+              <span *ngFor="let power of hero.powers.slice(0, 2)" 
+                    class="power-tag">
+                {{ power }}
+              </span>
+              <span *ngIf="hero.powers.length > 2" 
+                    class="more-powers-tag">
+                +{{ hero.powers.length - 2 }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action section -->
+        <div class="hero-actions">
+          <button mat-raised-button color="primary" class="view-btn">
+            <mat-icon>visibility</mat-icon>
+            View Profile
+          </button>
+          <div class="action-icons">
+            <button mat-icon-button class="favorite-btn">
+              <mat-icon>favorite_border</mat-icon>
+            </button>
+            <button mat-icon-button class="share-btn">
+              <mat-icon>share</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hover overlay -->
+        <div class="hover-overlay">
+          <div class="overlay-content">
+            <mat-icon>visibility</mat-icon>
+            <span>View Details</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state melhorado -->
+  <div *ngIf="filteredHeroes.length === 0" class="empty-state">
+    <div class="empty-icon">
+      <mat-icon>search_off</mat-icon>
+    </div>
+    <h3>No Heroes Found</h3>
+    <p>No heroes match your current filter. Try selecting a different category.</p>
+    <button mat-raised-button color="primary" (click)="filterHeroes('all')">
+      <mat-icon>refresh</mat-icon>
+      Show All Heroes
+    </button>
+  </div>
+</div>

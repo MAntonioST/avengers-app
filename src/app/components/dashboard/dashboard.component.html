@@ -1,0 +1,289 @@
+<div class="dashboard-container">
+  <!-- Hero Header with animated background -->
+  <div class="dashboard-header">
+    <div class="header-background">
+      <div class="floating-icon">🦸‍♂️</div>
+      <div class="floating-icon">⚡</div>
+      <div class="floating-icon">🛡️</div>
+      <div class="floating-icon">🔥</div>
+      <div class="floating-icon">💎</div>
+    </div>
+    <div class="header-content">
+      <h1>
+        <span class="title-icon">🏢</span>
+        Avengers Command Center
+        <span class="title-icon">🌟</span>
+      </h1>
+      <p>Real-time monitoring of Earth's Mightiest Heroes</p>
+      <div class="status-indicator">
+        <div class="status-dot active"></div>
+        <span>All Systems Operational</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Stats Grid -->
+  <div class="stats-section">
+    <h2 class="section-title">
+      <mat-icon>analytics</mat-icon>
+      Mission Statistics
+    </h2>
+    
+    <div class="stats-grid">
+      <div class="stat-card heroes-stat" (click)="navigateToHeroes()">
+        <div class="stat-background"></div>
+        <div class="stat-icon">
+          <mat-icon>group</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ totalHeroes }}</div>
+          <div class="stat-label">Total Heroes</div>
+          <div class="stat-change positive">+2 this month</div>
+        </div>
+        <div class="stat-chart">
+          <div class="chart-bar" style="height: 60%"></div>
+          <div class="chart-bar" style="height: 80%"></div>
+          <div class="chart-bar" style="height: 100%"></div>
+          <div class="chart-bar" style="height: 75%"></div>
+        </div>
+      </div>
+
+      <div class="stat-card missions-stat" (click)="navigateToMissions()">
+        <div class="stat-background"></div>
+        <div class="stat-icon">
+          <mat-icon>assignment</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ totalMissions }}</div>
+          <div class="stat-label">Active Missions</div>
+          <div class="stat-change positive">+5 this week</div>
+        </div>
+        <div class="stat-chart">
+          <div class="chart-bar" style="height: 45%"></div>
+          <div class="chart-bar" style="height: 70%"></div>
+          <div class="chart-bar" style="height: 90%"></div>
+          <div class="chart-bar" style="height: 85%"></div>
+        </div>
+      </div>
+
+      <div class="stat-card threat-stat">
+        <div class="stat-background"></div>
+        <div class="stat-icon">
+          <mat-icon>warning</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ threatLevel }}</div>
+          <div class="stat-label">Threat Level</div>
+          <div class="stat-change negative">-1 from last week</div>
+        </div>
+        <div class="threat-indicator">
+          <div class="threat-bar" [ngClass]="getThreatClass()"></div>
+        </div>
+      </div>
+
+      <div class="stat-card success-stat">
+        <div class="stat-background"></div>
+        <div class="stat-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ successRate }}%</div>
+          <div class="stat-label">Success Rate</div>
+          <div class="stat-change positive">+3% this month</div>
+        </div>
+        <div class="success-ring">
+          <svg class="ring-chart" viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="ring-fill" [attr.stroke-dasharray]="successRate + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+    <!-- Active Heroes Section -->
+    <div class="content-card heroes-section">
+      <div class="card-header">
+        <h3>
+          <mat-icon>stars</mat-icon>
+          Top Active Heroes
+        </h3>
+        <button mat-icon-button (click)="navigateToHeroes()">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+      
+      <div class="heroes-list">
+        <div *ngFor="let hero of topHeroes; let i = index" 
+             class="hero-item" 
+             (click)="viewHeroDetails(hero.id)">
+          <div class="hero-rank">{{ i + 1 }}</div>
+          <div class="hero-avatar">{{ hero.avatar }}</div>
+          <div class="hero-info">
+            <div class="hero-name">{{ hero.name }}</div>
+            <div class="hero-status" [ngClass]="'status-' + hero.status">
+              <mat-icon>{{ getStatusIcon(hero.status) }}</mat-icon>
+              {{ hero.status | titlecase }}
+            </div>
+          </div>
+          <div class="hero-power">
+            <div class="power-bar">
+              <div class="power-fill" [style.width.%]="calculateOverallPower(hero)"></div>
+            </div>
+            <span class="power-value">{{ calculateOverallPower(hero) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Missions Section -->
+    <div class="content-card missions-section">
+      <div class="card-header">
+        <h3>
+          <mat-icon>rocket_launch</mat-icon>
+          Recent Missions
+        </h3>
+        <button mat-icon-button (click)="navigateToMissions()">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+      
+      <div class="missions-list">
+        <div *ngFor="let mission of recentMissions" 
+             class="mission-item"
+             (click)="viewMissionDetails(mission.id)">
+          <div class="mission-icon">
+            <mat-icon>{{ getMissionIcon(mission.type) }}</mat-icon>
+          </div>
+          <div class="mission-info">
+            <div class="mission-name">{{ mission.name }}</div>
+            <div class="mission-location">{{ mission.location }}</div>
+          </div>
+          <div class="mission-status">
+            <div class="status-badge" [ngClass]="'status-' + mission.status">
+              {{ mission.status | titlecase }}
+            </div>
+            <div class="threat-level" [ngClass]="'threat-' + mission.threatLevel">
+              {{ mission.threatLevel | titlecase }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status Section -->
+    <div class="content-card system-section">
+      <div class="card-header">
+        <h3>
+          <mat-icon>computer</mat-icon>
+          System Status
+        </h3>
+        <div class="status-indicator online">
+          <div class="status-dot"></div>
+          <span>Online</span>
+        </div>
+      </div>
+      
+      <div class="system-metrics">
+        <div class="metric-item">
+          <div class="metric-label">
+            <mat-icon>memory</mat-icon>
+            Server Load
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" style="width: 65%"></div>
+          </div>
+          <span class="metric-value">65%</span>
+        </div>
+        
+        <div class="metric-item">
+          <div class="metric-label">
+            <mat-icon>storage</mat-icon>
+            Database
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" style="width: 42%"></div>
+          </div>
+          <span class="metric-value">42%</span>
+        </div>
+        
+        <div class="metric-item">
+          <div class="metric-label">
+            <mat-icon>wifi</mat-icon>
+            Network
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" style="width: 88%"></div>
+          </div>
+          <span class="metric-value">88%</span>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-label">
+            <mat-icon>security</mat-icon>
+            Security
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" style="width: 95%"></div>
+          </div>
+          <span class="metric-value">95%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="content-card actions-section">
+      <div class="card-header">
+        <h3>
+          <mat-icon>flash_on</mat-icon>
+          Quick Actions
+        </h3>
+      </div>
+      
+      <div class="actions-grid">
+        <button mat-raised-button color="primary" class="action-btn" (click)="navigateToHeroes()">
+          <mat-icon>add_circle</mat-icon>
+          <span>Add Hero</span>
+        </button>
+        
+        <button mat-raised-button color="accent" class="action-btn" (click)="navigateToMissions()">
+          <mat-icon>assignment_add</mat-icon>
+          <span>New Mission</span>
+        </button>
+        
+        <button mat-raised-button color="warn" class="action-btn">
+          <mat-icon>emergency</mat-icon>
+          <span>Emergency</span>
+        </button>
+        
+        <button mat-raised-button class="action-btn">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Timeline -->
+  <div class="timeline-section">
+    <h2 class="section-title">
+      <mat-icon>timeline</mat-icon>
+      Recent Activity
+    </h2>
+    
+    <div class="timeline">
+      <div *ngFor="let activity of recentActivities" class="timeline-item">
+        <div class="timeline-dot" [ngClass]="activity.type"></div>
+        <div class="timeline-content">
+          <div class="activity-header">
+            <span class="activity-title">{{ activity.title }}</span>
+            <span class="activity-time">{{ activity.time }}</span>
+          </div>
+          <p class="activity-description">{{ activity.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

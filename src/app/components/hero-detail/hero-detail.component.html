@@ -1,0 +1,170 @@
+<div class="hero-detail-container" *ngIf="hero">
+  <div class="back-button">
+    <button mat-fab color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+  <div class="hero-header">
+    <div class="hero-avatar-large">{{ hero.avatar }}</div>
+    <div class="hero-info">
+      <h1>{{ hero.name }}</h1>
+      <h2>{{ hero.realName }}</h2>
+      <div class="status-badge" [ngClass]="'status-' + hero.status">
+        <mat-icon>{{ hero.status === 'active' ? 'check_circle' : 
+                     hero.status === 'inactive' ? 'pause_circle' : 'cancel' }}</mat-icon>
+        {{ hero.status | titlecase }}
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <!-- Description Card -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>📖 About</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ hero.description }}</p>
+        <div class="affiliation">
+          <strong>Affiliation:</strong> {{ hero.affiliation }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Powers Card -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>⚡ Powers & Abilities</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip-set>
+          <mat-chip *ngFor="let power of hero.powers" color="primary" selected>
+            {{ power }}
+          </mat-chip>
+        </mat-chip-set>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Stats Card -->
+    <mat-card class="stats-card">
+      <mat-card-header>
+        <mat-card-title>📊 Combat Statistics</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-item">
+          <div class="stat-header">
+            <span class="stat-name">Strength</span>
+            <span class="stat-value">{{ hero.stats.strength }}</span>
+          </div>
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="hero.stats.strength"
+            [color]="getStatColor(hero.stats.strength)">
+          </mat-progress-bar>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-header">
+            <span class="stat-name">Intelligence</span>
+            <span class="stat-value">{{ hero.stats.intelligence }}</span>
+          </div>
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="hero.stats.intelligence"
+            [color]="getStatColor(hero.stats.intelligence)">
+          </mat-progress-bar>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-header">
+            <span class="stat-name">Speed</span>
+            <span class="stat-value">{{ hero.stats.speed }}</span>
+          </div>
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="hero.stats.speed"
+            [color]="getStatColor(hero.stats.speed)">
+          </mat-progress-bar>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-header">
+            <span class="stat-name">Durability</span>
+            <span class="stat-value">{{ hero.stats.durability }}</span>
+          </div>
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="hero.stats.durability"
+            [color]="getStatColor(hero.stats.durability)">
+          </mat-progress-bar>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-header">
+            <span class="stat-name">Energy Projection</span>
+            <span class="stat-value">{{ hero.stats.energy }}</span>
+          </div>
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="hero.stats.energy"
+            [color]="getStatColor(hero.stats.energy)">
+          </mat-progress-bar>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-header">
+            <span class="stat-name">Fighting Skills</span>
+            <span class="stat-value">{{ hero.stats.fighting }}</span>
+          </div>
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="hero.stats.fighting"
+            [color]="getStatColor(hero.stats.fighting)">
+          </mat-progress-bar>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Equipment Card -->
+    <mat-card class="info-card" *ngIf="hero.equipment && hero.equipment.length > 0">
+      <mat-card-header>
+        <mat-card-title>🛡️ Equipment</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="equipment-list">
+          <div *ngFor="let item of hero.equipment" class="equipment-item">
+            <mat-icon>build</mat-icon>
+            <span>{{ item }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <button mat-raised-button color="primary">
+      <mat-icon>edit</mat-icon>
+      Edit Hero
+    </button>
+    <button mat-raised-button color="accent">
+      <mat-icon>assignment</mat-icon>
+      Assign Mission
+    </button>
+    <button mat-raised-button>
+      <mat-icon>share</mat-icon>
+      Share Profile
+    </button>
+  </div>
+</div>
+
+<div class="hero-not-found" *ngIf="!hero">
+  <mat-icon>error</mat-icon>
+  <h2>Hero Not Found</h2>
+  <p>The hero you're looking for doesn't exist.</p>
+  <button mat-raised-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Heroes
+  </button>
+</div>
