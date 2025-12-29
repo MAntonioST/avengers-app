@@ -1,58 +1,100 @@
-# AvengersApp
+# 🦸‍♂️ Avengers Command Center
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+> Modern Angular dashboard for superhero team management with real-time monitoring, mission tracking, and responsive Material Design UI
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-21-red?style=flat-square&logo=angular)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
+![Material](https://img.shields.io/badge/Material_Design-UI-green?style=flat-square&logo=material-design)
+![SCSS](https://img.shields.io/badge/SCSS-Styling-pink?style=flat-square&logo=sass)
 
-To start a local development server, run:
+## ✨ Features
+
+- 📊 **Real-time Dashboard** - Live statistics and monitoring
+- 🦸‍♂️ **Heroes Management** - Complete CRUD operations for superhero profiles
+- 🎯 **Mission Tracking** - Advanced mission management with threat levels
+- 🔔 **Notifications** - Real-time alerts and updates
+- 📱 **Responsive Design** - Mobile-first approach with Material Design
+- 🎨 **Modern UI/UX** - Animated components and smooth interactions
+
+## 🚀 Demo
+
+![Dashboard Preview](https://via.placeholder.com/800x400/667eea/ffffff?text=Avengers+Dashboard)
+
+## ��️ Tech Stack
+
+- **Frontend**: Angular 21, TypeScript
+- **UI Framework**: Angular Material
+- **Styling**: SCSS with custom animations
+- **Icons**: Material Icons
+- **Routing**: Angular Router
+- **State Management**: Services with RxJS
+
+```
+  🏗️ Project Structure
+  
+avengers-app/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── dashboard/
+│   │   │   │   ├── dashboard.component.html ✅
+│   │   │   │   ├── dashboard.component.scss ✅
+│   │   │   │   └── dashboard.component.ts ✅
+│   │   │   ├── heroes/
+│   │   │   │   ├── heroes.component.html ✅
+│   │   │   │   ├── heroes.component.scss ✅
+│   │   │   │   └── heroes.component.ts ✅
+│   │   │   ├── missions/
+│   │   │   │   ├── missions.component.html ✅
+│   │   │   │   ├── missions.component.scss ✅
+│   │   │   │   └── missions.component.ts ✅
+│   │   │   └── navbar/
+│   │   │       ├── navbar.component.html ✅
+│   │   │       ├── navbar.component.scss ✅
+│   │   │       └── navbar.component.ts ✅
+│   │   ├── models/
+│   │   │   ├── hero.interface.ts ✅
+│   │   │   └── mission.interface.ts ✅
+│   │   ├── services/
+│   │   │   ├── hero.service.ts ✅
+│   │   │   └── mission.service.ts ✅
+│   │   ├── app.component.html ✅
+│   │   ├── app.component.scss ✅
+│   │   ├── app.component.ts ✅
+│   │   └── app.routes.ts ✅
+│   └── styles.scss ✅
+
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+👨‍💻 Author
+MAntonioST
+
+GitHub: 
+
+github.com
+🙏 Acknowledgments
+Marvel Comics for the Avengers inspiration
+Angular team for the amazing framework
+Material Design for the UI components
+
+## 📦 Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/MAntonioST/avengers-app.git
+
+# Navigate to project directory
+cd avengers-app
+
+# Install dependencies
+npm install
+
+# Start development server
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+# Open browser at http://localhost:4200
 
 ## Additional Resources
 
